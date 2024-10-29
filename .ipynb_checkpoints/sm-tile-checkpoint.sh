@@ -19,7 +19,7 @@ if [[ $? -ne 0 ]]; then
   echo "Failed to activate the conda environment 'ms-env'."
   exit 1
 fi
-
+mkdir -p output
 # find ${basedir}
 # find . -type f > output/findf.txt
 parent_path=$(realpath .)
