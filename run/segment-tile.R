@@ -22,6 +22,7 @@ library(lidR)
 library(MeanShiftR)
 library(data.table)
 library(sf)
+library(plyr)
 
 
 print(paste("input:",input_file))
@@ -35,16 +36,20 @@ set_lidr_threads(0)
 
 # read file as data.table
 f_dt <- readRDS(input_file)
-f_dt <- as.data.table(f_dt)
-
+dtname <- names(f_dt)[1]
+f_dt <- as.data.table(f_dt[[dtname]])
+print('data.table: ')
+print(f_dt)
+pc.list <- list()
+pc.list[[1]] <- f_dt
 # this just has to be here
 lib_path <- .libPaths()[1]
-
+print('enter MS apply')
 # catch errors in files
 tryCatch({
   # important that we only use 90% of the available processor cores to prevent crashing
     # centroid accuracy is worth considering, default is 2
-	ms_result <- MeanShiftR::apply_MeanShift(f_dt, lib.path = lib_path, run.parallel= FALSE, frac.cores = FRAC.CORES, version = 'classic', H2CW = H2CW, H2CL = H2CD,minz=MINZ)
+	ms_result <- MeanShiftR::apply_MeanShift(pc.list, lib.path = lib_path, run.parallel= FALSE, frac.cores = FRAC.CORES, version = 'classic', H2CW = H2CW, H2CL = H2CD,minz=MINZ)
 
      print("Mean Shift segmentation done")
      
@@ -107,5 +112,5 @@ tryCatch({
      error = function(e){
      	print("error in file:")
 	print(e)
-     	skipped[input_file]
+     	print(input_file)
      })
