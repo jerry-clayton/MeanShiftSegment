@@ -1,0 +1,7 @@
+install.packages('lidR', repos="https://cloud.r-project.org")
+install.packages('devtools', repos="https://cloud.r-project.org")
+install.packages('data.table', repos="https://cloud.r-project.org")
+install.packages('sf', repos="https://cloud.r-project.org")
+library(devtools)
+install_version('rgeos','0.6-4', repos="https://cloud.r-project.org")
+install_github('niknap/MeanShiftR')
